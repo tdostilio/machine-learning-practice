@@ -4,13 +4,13 @@ const prompt = require('prompt');
 let knn;
 
 const csvFilePath = 'iris.csv'; //Data
-const names = ['sepalLength', 'sepalWidth', 'petalLength', 'type']; // For header
+const names = ['sepalLength', 'sepalWidth', 'petalLength', 'petalWidth', 'type']; // For header
 
 let separationSize; // To Separate training and test data
 
-let data = [],
-    X = [],
-    y = [];
+let data = [];
+let X = [];
+let y = [];
 
 
 let trainingSetX = [];
@@ -22,30 +22,13 @@ let testSetY = [];
 csv({noheader: true, headers: names})
     .fromFile(csvFilePath)
     .on('json', (jsonObj) => {
-        data.push(jsonObj);
+        data.push(jsonObj); //Push each object to data Array
     })
     .on('done', (error) => {
         separationSize = 0.7 * data.length;
         data = shuffleArray(data);
         dressData();
     });
-
-
-/**
- * https://stackoverflow.com/a/12646864
- * Randomize array element order in-place.
- * Using Durstenfeld shuffle algorithm.
- */
-
- function shuffleArray(array) {
-     for (var i = array.length -1; i >0; i--) {
-         var j = Math.floor(Math.random() * (i + 1));
-         var temp = array[i];
-         array[i] = array[j];
-         array[j] = tempt;
-     }
-    return array;   
- }
 
 function dressData() {
 
@@ -63,7 +46,7 @@ function dressData() {
  * 1 would mean versicolor, and
  * 3 would mean virginica
  */
-    let types = new Set();
+    let types = new Set(); //To gather UNIQUE classes
 
     data.forEach((row) => {
         types.add(row.type);
@@ -83,7 +66,7 @@ function dressData() {
     });
 
     trainingSetX = X.slice(0, separationSize);
-    trainingSetY = X.slice(0, separationSize);
+    trainingSetY = y.slice(0, separationSize);
     testSetX = X.slice(separationSize);
     testSetY = y.slice(separationSize);
 
@@ -99,7 +82,7 @@ function test() {
     const result = knn.predict(testSetX);
     const testSetLength = testSetX.length;
     const predictionError = error(result, testSetY);
-    console.log(`Test Set Size = ${testSetLength} and number of Misclassifications = ${predicitionError}`);
+    console.log(`Test Set Size = ${testSetLength} and number of Misclassifications = ${predictionError}`);
     predict();
 }
 
@@ -125,4 +108,20 @@ function predict() {
             console.log(`With ${temp} -- type = ${knn.predict(temp)}`);
         }
     });
+}
+
+/**
+ * https://stackoverflow.com/a/12646864
+ * Randomize array element order in-place.
+ * Using Durstenfeld shuffle algorithm.
+ */
+
+function shuffleArray(array) {
+    for (var i = array.length -1; i >0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+return array;   
 }
