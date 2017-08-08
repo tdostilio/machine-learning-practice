@@ -102,3 +102,27 @@ function test() {
     console.log(`Test Set Size = ${testSetLength} and number of Misclassifications = ${predicitionError}`);
     predict();
 }
+
+function error(predicted, expected) {
+    let misclassifications = 0;
+    for (var index = 0; index < predicted.length; index++) {
+        if (predicted[index] !== expected[index]){
+            misclassifications++;
+        }
+    }
+    return misclassifications;
+}
+
+function predict() {
+    let temp = [];
+    prompt.start();
+
+    prompt.get(['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal Width'], function(err, result) {
+        if (!err) {
+            for (var key in result) {
+                temp.push(parseFloat(result[key]));
+            }
+            console.log(`With ${temp} -- type = ${knn.predict(temp)}`);
+        }
+    });
+}
