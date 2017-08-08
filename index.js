@@ -2,6 +2,12 @@ const ml = require('ml-regression');
 const csv = require('csvtojson');
 const SLR = ml.SLR; // SIMPLE LINEAR REGRESSION
 
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
 const csvFilePath = 'advertising.csv'; 
 let csvData = [];  //parsed Data
 let X = []; //Input
@@ -52,7 +58,7 @@ function performRegression() {
 
 function predictOutput() {
     rl.question('Enter input X for prediction (Press CTRL+C to exit) : ', (answer) => {
-        console.log(`At X  = ${answer}, y = ${regressionModel.predict(parseFloat(answer))}`);
+        console.log(`At X  = ${answer}, y = ${regressionModel.predict(f(answer))}`);
         predictOutput();
     });
 }
