@@ -88,5 +88,9 @@ function dressData() {
     testSetY = y.slice(separationSize);
 
     train();
+}
 
+function train() {
+    knn = new KNN(trainingSetX, trainingSetY, {k: 7});
+    test();
 }
