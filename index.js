@@ -4,7 +4,7 @@ const SLR = ml.SLR; // SIMPLE LINEAR REGRESSION
 
 const csvFilePath = 'advertising.csv'; 
 let csvData = [];  //parsed Data
-let x = []; //Input
+let X = []; //Input
 let y = []; //Output
 
 let regressionModel;
@@ -35,11 +35,24 @@ function dressData() {
      * we need to parse the String value as a Float.
      */
         csvData.forEach((row) => {
-            x.push(f(row.Radio));
+            X.push(f(row.Radio));
             y.push(f(row.Sales));
         });
 }
 
 function f(s) {
     return parseFloat(s)
+}
+
+function performRegression() {
+    regressionModel = new SLR(X,y); //Train the model on training data
+    console.log(regressionModel.toString(3));
+    predictOutput();
+}
+
+function predictOutput() {
+    rl.question('Enter input X for prediction (Press CTRL+C to exit) : ', (answer) => {
+        console.log(`At X  = ${answer}, y = ${regressionModel.predict(parseFloat(answer))}`);
+        predictOutput();
+    });
 }
