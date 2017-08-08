@@ -94,3 +94,11 @@ function train() {
     knn = new KNN(trainingSetX, trainingSetY, {k: 7});
     test();
 }
+
+function test() {
+    const result = knn.predict(testSetX);
+    const testSetLength = testSetX.length;
+    const predictionError = error(result, testSetY);
+    console.log(`Test Set Size = ${testSetLength} and number of Misclassifications = ${predicitionError}`);
+    predict();
+}
